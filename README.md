@@ -2,6 +2,7 @@
 
 ##Avant
 - modifier hosts avec les bonnes ips
+- mot de passe mysql
 - apt-get update && apt-get upgrade
 - installer vim et python: apt-get install -y python vim
 - installer clef public pour utilisateur root
