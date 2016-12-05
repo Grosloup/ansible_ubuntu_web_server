@@ -1,0 +1,11 @@
+---
+- name: install nginx
+  apt: name=nginx state=latest
+- name: start nginx
+  service: name=nginx state=started enabled=yes
+- name: suppression de nginx.conf
+  file: path={{ nginx_conf_file_path }} state=absent
+- name: nouvelle configuration nginx
+  template: src=templates/nginx.conf.j2 dest={{ nginx_conf_file_path }}
+  notify: nginx restart
+...

@@ -1,0 +1,10 @@
+---
+nginx_conf_file_path: "/etc/nginx/nginx.conf"
+nginx_logs_dir: "/var/log/nginx/"
+nginx_user: www-data
+nginx_workers: 16
+nginx_worker_rlimit_nofile: 100000
+nginx_worker_connections: 16384
+nginx_multi_accept: true
+nginx_use_epoll: true
+...

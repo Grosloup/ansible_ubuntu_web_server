@@ -1,0 +1,27 @@
+---
+- name: installation de php
+  apt: name={{ item }} state=latest
+  with_items: "{{ php_packages }}"
+- lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='disable_functions[\s]*=' line='disable_functions = {{ php_disable_functions }}'
+- lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='date.timezone[\s]*=' line='date.timezone = {{ php_timezone }}'
+- lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='upload_max_filesize[\s]*=' line='upload_max_filesize = {{ php_upload_max_filesize }}'
+- lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='post_max_size[\s]*=' line='post_max_size = {{ php_post_max_size }}'
+- lineinfile: dest=/etc/php/7.0/cli/php.ini regexp='disable_functions[\s]*=' line='disable_functions = {{ php_disable_functions }}'
+- lineinfile: dest=/etc/php/7.0/cli/php.ini regexp='date.timezone[\s]*=' line='date.timezone = {{ php_timezone }}'
+- lineinfile: dest=/etc/php/7.0/cli/php.ini regexp='upload_max_filesize[\s]*=' line='upload_max_filesize = {{ php_upload_max_filesize }}'
+- lineinfile: dest=/etc/php/7.0/cli/php.ini regexp='post_max_size[\s]*=' line='post_max_size = {{ php_post_max_size }}'
+  notify: php restart
+
+- name: upload composer installer
+  script: ../templates/install_composer.sh
+- name: rename composer.phar to composer
+  shell: mv ~/composer.phar /usr/local/bin/composer
+  args:
+    creates: /usr/local/bin/composer
+
+- name: make composer executable
+  file: 
+    path: /usr/local/bin/composer
+    mode: a+x
+    state: file
+...
