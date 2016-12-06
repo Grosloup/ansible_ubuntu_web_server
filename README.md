@@ -1,6 +1,7 @@
 #Installation sur ubuntu 16.04
 
 ##Avant
+
 - modifier hosts avec les bonnes ips
 - mot de passe mysql (mysql)
 - modifier ports ufw (security => ssh,redis,postfix)
@@ -10,6 +11,7 @@
 - Modifier le fichier /etc/ssh/sshd_config: port et PermitRootLogin
 
 ##letsencrypt
+
 www.ssllabs.com
 le server à certifier est déjà configuré et écoute sur le port 80.
 Dans les configs de celui-ci il faut que soit présente la règle suivante:
@@ -20,7 +22,9 @@ $ letsencrypt certonly --rsa-key-size 4096 --webroot -w <webroot> -d <hostname> 
 
 les configs du server peuvent être modifiées pour passer en https
 
+
 ###renouvellement automatique
+
 lancer une première fois
 $ letsencrypt renew 
 
@@ -28,9 +32,11 @@ modifier le crontab
 $ crontab -e
 30 3 * * 0 letsencrypt renew >> /var/log/letsencrypt.log >/dev/null 2>&1
 
+
 ##Ne pas oublier
 
-- config de fail2ban
+
+- config de fail2ban :
 
 ```
 /etc/fail2ban
@@ -57,7 +63,9 @@ ssh changer le port
 
 - logrotate
 
+
 ##créer une deuxième instance de redis
+
 
 cp /etc/init.d/redis-server /etc/init.d/redis-server2
 
