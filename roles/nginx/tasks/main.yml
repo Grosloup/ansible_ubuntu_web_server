@@ -8,6 +8,6 @@
 - name: nouvelle configuration nginx
   template: src=templates/nginx.conf.j2 dest={{ nginx_conf_file_path }}
 - name: supression de default
-  file: /etc/nginx/sites-enabled/default state=absent
+  file: path=/etc/nginx/sites-enabled/default state=absent
   notify: nginx restart
 ...

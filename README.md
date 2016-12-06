@@ -9,6 +9,53 @@
 - installer clef public pour utilisateur root
 - Modifier le fichier /etc/ssh/sshd_config: port et PermitRootLogin
 
+##letsencrypt
+www.ssllabs.com
+le server à certifier est déjà configuré et écoute sur le port 80.
+Dans les configs de celui-ci il faut que soit présente la règle suivante:
+location ~ /\.well-known { allow all; } 
+Attention le dossier .well-known doit être à la racine du document root
+
+$ letsencrypt certonly --rsa-key-size 4096 --webroot -w <webroot> -d <hostname> -d www.<hostname> --email tech@zoobeauval.com
+
+les configs du server peuvent être modifiées pour passer en https
+
+###renouvellement automatique
+lancer une première fois
+$ letsencrypt renew 
+
+modifier le crontab
+$ crontab -e
+30 3 * * 0 letsencrypt renew >> /var/log/letsencrypt.log >/dev/null 2>&1
+
+##Ne pas oublier
+
+- config de fail2ban
+
+```
+/etc/fail2ban
+
+cp jail.conf jail.local
+
+
+vim jail.local.conf
+
+-> destemail
+
+-> mta = mail   # postfix
+
+-> action  = %(action_mwl)s
+
+jails :
+
+ssh changer le port
+
+```
+
+
+
+
+- logrotate
 
 ##créer une deuxième instance de redis
 
