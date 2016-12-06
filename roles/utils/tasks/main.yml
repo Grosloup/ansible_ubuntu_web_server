@@ -12,6 +12,7 @@
     - python-pip
     - python-dev
     - libmysqlclient-dev
+    - letsencrypt
 - pip:
     name: MySQL-python
 ...

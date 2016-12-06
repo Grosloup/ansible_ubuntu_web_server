@@ -1,0 +1,111 @@
+server {
+
+	listen80;
+
+	server_name {{ server_name }};
+
+	root {{ server_document_root }};
+
+	index index.php;
+	
+	error_log /var/log/nginx/{{ server_name}}.error.log;
+	access_log /var/log/nginx/{{ server_name}}.access.log;
+
+	location ~* \.(eot|otf|ttf|woff|svg)$ {
+		add_header "Access-Control-Allow-Origin" "*";
+      	add_header Vary Accept-Encoding;
+      	add_header Cache-Control "public";
+      	access_log off;
+      	log_not_found off;
+    }
+
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svgz|mp4|ogg|ogv|webm|htc)$ {
+       expires modified 31536000s;
+       access_log off;
+       log_not_found off;
+       valid_referers none blocked server_names ~.google. ~.bing. ~.yahoo.;
+       if ($invalid_referer) {
+            return 403;
+       }
+       add_header Cache-Control "public";
+    }
+
+    location ~* \.(?:css|js)$ {
+      expires modified 31536000s;
+      access_log off;
+      log_not_found     off;
+      add_header Cache-Control "public";
+    }
+
+    location ~ /.well-known {
+        allow all;
+    }
+################ DEV
+	{% if server_is_dev == true %}
+
+
+    rewrite ^/app_dev\.php/?(.)* /$1 permanent;
+
+    location @rewriteappdev {
+        rewrite ^(.*)$ /app_dev.php/$1 last;
+    }
+
+    location / {
+      try_files $uri @rewriteappdev;
+    }
+
+    location ~ ^/(app_dev|config)\.php(/|$) {
+      add_header X-Frame-Options SAMEORIGIN;
+      # add_header Strict-Transport-Security "max-age=31536000;includeSubDomains;";
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Content-Type-Options nosniff;
+      index index.php;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $request_filename;
+      fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+      fastcgi_split_path_info ^(.+\.php)(/.*)$;
+      include fastcgi_params;
+      fastcgi_buffer_size 128k;
+      fastcgi_buffers 128 128k;
+      fastcgi_busy_buffers_size 256k;
+      fastcgi_temp_file_write_size 256k;
+    }
+
+################ PROD
+	{% else %}
+
+    rewrite ^/app\.php/?(.)* /$1 permanent;
+
+    location @rewriteappdev {
+        rewrite ^(.*)$ /app.php/$1 last;
+    }
+
+    location / {
+      try_files $uri @rewriteappdev;
+    }
+
+    location ~ ^/app\.php(/|$) {
+        add_header X-Frame-Options SAMEORIGIN;
+        # add_header Strict-Transport-Security "max-age=31536000;includeSubDomains;";
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-Content-Type-Options nosniff;
+        index index.php;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $request_filename;
+        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 128 128k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+    }
+
+	{% endif %}
+
+	location ~ \.php$ { return 404; }
+
+    location ~ /\. { deny all; }
+
+    sendfile off;
+}
