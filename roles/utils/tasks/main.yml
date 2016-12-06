@@ -9,7 +9,6 @@
     - tree
     - htop
     - vim
-    - ufw
     - python-pip
     - python-dev
     - libmysqlclient-dev
