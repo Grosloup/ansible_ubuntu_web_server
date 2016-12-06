@@ -62,7 +62,7 @@ http {
         }
         
         access_log {{ nginx_logs_dir }}access.log;
-        error_log {{ nginx_logs_dir }}error.log combined if=$loggable;
+        error_log {{ nginx_logs_dir }}error.log if=$loggable;
 
         ##
         # Gzip Settings
