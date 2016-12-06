@@ -9,4 +9,5 @@
     - mysql
     - redis
     - security
+    - postfix
 ...
