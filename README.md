@@ -2,7 +2,8 @@
 
 ##Avant
 - modifier hosts avec les bonnes ips
-- mot de passe mysql
+- mot de passe mysql (mysql)
+- modifier ports ufw (security => ssh,redis,postfix)
 - apt-get update && apt-get upgrade
 - installer vim et python: apt-get install -y python vim
 - installer clef public pour utilisateur root

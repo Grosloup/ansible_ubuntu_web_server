@@ -1,0 +1,18 @@
+---
+- name: postfix mailname
+  debconf: name='postfix' question='postfix/mailname' value='canfrere-nicolas.com' vtype='string'
+
+- name: postfix type
+  debconf: name='postfix' question='postfix/main_mailer_type' value='Internet Site' vtype='select'
+
+- name: install mailutils
+  apt: name=mailutils state=latest
+
+- name: Install postfix
+  apt: name=postfix state=latest
+
+- lineinfile: dest=/etc/postfix/main.cf regexp='mydestination[\s]*=' line='mydestination = {{ansible_hostname}}, localhost.localdomain, localhost'
+- lineinfile: dest=/etc/postfix/main.cf regexp='inetinterface[\s]*=' line='inetinterface = loopback-only'
+
+  notify: postfix restart
+...

@@ -1,0 +1,16 @@
+---
+- name: ufw rules
+  ufw: rule=allow port={{ item }}
+  with_items:
+    - 80
+    - 443
+    - 22
+    - 6379
+    - 25
+    - 465
+    - 587
+    - 143
+    - 993
+- name: start ufw
+  ufw: state=enabled
+...
