@@ -10,4 +10,6 @@
   with_items:
     - mysql-server
     - mysql-client
+- name: Remove MySQL test database.
+  mysql_db: name='test' state=absent login_password='{{ mysql_root_pass }}' login_user=root
 ...
