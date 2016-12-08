@@ -1,0 +1,8 @@
+---
+- name: app install
+  hosts: app
+  remote_user: root
+  roles:
+    - utils
+    - security_app
+...
