@@ -1,0 +1,10 @@
+---
+- name: build-essential
+  apt: name=build-essential state=latest
+- name: libssl-dev
+  apt: name=libssl-dev state=latest
+- name: install script
+  shell: 'curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -'
+- name: install nodejs
+  apt: name=nodejs state=latest
+...
